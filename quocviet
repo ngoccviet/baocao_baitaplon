@@ -1,0 +1,420 @@
+#include<iostream>
+#include<conio.h>
+#include<fstream>
+#include<stdio.h>
+#include<stdlib.h>
+#include<dos.h>
+using namespace std;
+//bat dau lop class
+class hotel{
+	int room_no;
+	char name[30];
+	char address[50];
+	char phone[10];
+public:
+	void main_menu();		// de hien thi menu chinh
+	void add();			//dat phong
+	void display(); 		//de hien thi ho so khach hang
+	void rooms();			//hien thi cac phong
+	void edit();			//sua ho so khach hang
+	int check(int);			//kiem tra trang thai phong
+	void modify(int);		//chnh sua ho so
+	void delete_rec(int);		//xoa ho so
+	void bill(int);                 //tinh hoa don
+     };
+    //ket thuc class
+
+
+//HIEN THI MENU CHINH
+void hotel::main_menu(){
+	int choice;
+	while(choice!=5)
+	{
+		system("cls");
+		cout<<"\n\t\t\t\t*************************";
+		cout<<"\n\t\t\t\t NHOM 15 HOTEL MANAGEMENT ";
+		cout<<"\n\t\t\t\t      * MAIN MENU *";
+		cout<<"\n\t\t\t\t*************************";
+		cout<<"\n\n\n\t\t\t1.Dat Phong";
+		cout<<"\n\t\t\t2.Ho so khach hang";
+		cout<<"\n\t\t\t3.So phong da duoc dat";
+		cout<<"\n\t\t\t4.Chinh Sua ban ghi";
+		cout<<"\n\t\t\t5.Thoat";
+		cout<<"\n\n\t\t\tNhap lua chon cua ban: ";
+		cin>>choice;
+	switch(choice){
+		case 1:	add();
+			break;
+		case 2: display();
+			break;
+		case 3: rooms();
+			break;
+		case 4:	edit();
+			break;
+		case 5: 
+			break;
+		default:
+			{
+			cout<<"\n\n\t\t\tLua chon Sai.....!!!";
+			cout<<"\n\t\t\tNhan phim bat ky de tiep tuc......!!";
+			getch();
+			}
+		}
+	}
+}
+
+//HAM DAT PHONGG
+void hotel::add(){
+	system("cls");
+	int r,flag;
+	ofstream fout("Record.dat",ios::app);
+	cout<<"\n nhap thong tin khach hang";
+	cout<<"\n ----------------------";
+	cout<<"\n\n Phong So: ";
+	cout<<"\n Tong So phong la 50";
+	cout<<"\n Phong Thuong (tu 1 - 30)";
+	cout<<"\n Phong Sang trong (tu 31 - 45)";
+	cout<<"\n Phong Vip (tu 46 - 50)";
+	cout <<"\n Nhap so phong ban muon thue: "<<endl;
+	cin>>r;
+    flag=check(r);
+
+	if(flag) cout<<"\n Xin loi! Phong da duoc dat truoc";
+	else{
+		room_no=r;
+		cout<<" Ten: ";
+		cin>>name;
+		cout<<" Dia chi: ";
+		cin>>address;
+		cout<<" So Dien Thoai: ";
+		cin>>phone;
+		fout.write((char*)this,sizeof(hotel));
+		cout<<"\n Phong da duoc dat...!!!";
+	}	
+	cout<<"\n Nhan phim bat ki de tiep tuc.....!!";
+
+	getch();
+
+	fout.close();
+
+
+}
+
+
+//Ket thuc chuc nang dat phong
+
+
+//chuc nang hien thi ho so khach hang rieng 
+
+
+
+
+
+void hotel::display(){
+
+
+	system("cls");
+
+
+	ifstream fin("Record.dat",ios::in);
+	int r,flag;
+
+	cout<<"\n Nhap so phong can biet thong tin:- "<<endl;
+	cin>>r;
+
+
+	while(!fin.eof()){
+
+
+		fin.read((char*)this,sizeof(hotel));
+		if(room_no==r){
+
+
+
+			  system("cls");
+			cout<<"\n thong tin khach hang";
+			cout<<"\n ----------------";
+			cout<<"\n\n Room no: "<<room_no;
+			cout<<"\n Ten: "<<name;
+			cout<<"\n Dia Chi: "<<address;
+			cout<<"\n So Dien Thoai: "<<phone;
+			flag=1;
+			break;
+		}
+	}
+
+
+
+	if(flag==0)
+	cout<<"\n So Phong khong tim thay hoac chua duoc dat....!!";
+	cout<<"\n\n Nhan phim bat ky de tiep tuc....!!";
+
+	getch();
+
+	fin.close();
+
+}
+
+
+//END OF DISPLAY FUNCTION
+
+//Ham hien thi tat cac cac phong da duoc dat
+
+
+void hotel::rooms(){
+
+
+  	system("cls");
+
+
+	ifstream fin("Record.dat",ios::in);
+	cout<<"\n\t\t\t    Danh sach cac phong da dat";
+	cout<<"\n\t\t\t    ----------------------";
+	cout<<"\n\n Room No.\tTen\t\tDia Chi\t\t\t\tPhone No.\n";
+
+
+	while(!fin.eof()){
+
+
+		fin.read((char*)this,sizeof(hotel));
+		cout<<"\n\n "<<room_no<<"\t\t"<<name;
+		cout<<"\t\t"<<address<<"\t\t"<<phone;
+	}
+
+
+
+
+	cout<<"\n\n\n\t\t\tNhan phim bat ky de tiep tuc.....!!";
+	getch();
+	fin.close();
+
+
+}
+
+
+//Ham cho viec sua doi ho so v hoa don
+
+
+void hotel::edit(){
+
+
+  	system("cls");
+
+
+	int choice,r;
+	cout<<"\n MENU Sua Doi";
+	cout<<"\n ---------";
+	cout<<"\n\n 1.Sua Doi Ho So Khach Hang";
+	cout<<"\n 2.Xoa Ho So Khach Hang";
+	cout<<"\n 3. Hoa Don Cua Khach Hang";
+	cout<<"\n Nhap lua chn cua ban: ";
+	cin>>choice;
+  	system("cls");
+  	cout<<"\n Nhap so phong: " ;
+	cin>>r;
+switch(choice){
+
+
+
+	case 1:	modify(r);
+	break;
+
+	case 2:	delete_rec(r);
+	break;
+
+	case 3: bill(r);
+	break;
+
+	default: cout<<"\n Lua Chon Sai.....!!";
+
+
+}
+
+	cout<<"\n Nhan phim bat ki de tiep tuc....!!!";
+
+	getch();
+
+}
+
+
+int hotel::check(int r){
+	int flag=0;
+
+
+
+
+	ifstream fin("Record.dat",ios::in);
+
+
+	while(!fin.eof()){
+
+
+		fin.read((char*)this,sizeof(hotel));
+
+		if(room_no==r){
+
+
+			flag=1;
+			break;
+		}
+	}
+
+
+
+
+
+
+	fin.close();
+	return(flag);
+
+
+}
+
+
+//Ham sua doi ho so khach hang
+
+
+void hotel::modify(int r){
+
+
+	long pos,flag=0;
+
+	fstream file("Record.dat",ios::in|ios::out|ios::binary);
+
+
+	while(!file.eof()){
+
+
+		pos=file.tellg();
+		file.read((char*)this,sizeof(hotel));
+
+
+		if(room_no==r){
+
+
+			cout<<"\n Nhap Thong Tin Moi";
+			cout<<"\n -----------------";
+			cout<<"\n Ten: ";
+			cin>>name;
+			cout<<" \nDia chi: ";
+			cin>>address;
+			cout<<" \nSo Dien thoai: ";
+			cin>>phone;
+			file.seekg(pos);
+			file.write((char*)this,sizeof(hotel));
+			cout<<"\n Ho So Da Duoc Sua Doi....!!";
+			flag=1;
+			break;
+		}
+	}
+
+	if(flag==0)
+
+	cout<<"\n Xin loi, so phong khong tim thay hoac trong...!!";
+	file.close();
+}
+//END OF MODIFY FUNCTION
+//Ham xoa ho so
+void hotel::delete_rec(int r){
+	int flag=0;
+	char ch;
+	ifstream fin("Record.dat",ios::in);
+	ofstream fout("temp.dat",ios::out);
+	while(!fin.eof()){
+		fin.read((char*)this,sizeof(hotel));
+		if(room_no==r){
+
+
+			cout<<"\n Ten: "<<name;
+			cout<<"\n Dia Chi: "<<address;
+			cout<<"\n Pone No: "<<phone;
+			cout<<"\n\n Ban Co Muon Xoa Ban Ghi nay(y/n): ";
+			cin>>ch;
+			if(ch=='n')
+
+			fout.write((char*)this,sizeof(hotel));
+			flag=1;
+		}
+
+		else
+		fout.write((char*)this,sizeof(hotel));
+	}
+	fin.close();
+	fout.close();
+	if(flag==0) 
+	cout<<"\n Xin loi, khong tim thay hoac phong trong...!!";
+
+	else{
+
+
+
+		remove("Record.dat");
+		rename("temp.dat","Record.dat");
+	}
+
+
+}
+
+
+//END OF DELETE FUNCTION
+
+
+//Ham cho hoa don cua khach hang 
+
+void hotel::bill(int r){
+
+
+	hotel h1;
+	ifstream f1;
+ 	f1.open("record.dat",ios::in|ios::binary);
+
+	if(!f1)
+ 		cout<<"khong the mo file";
+
+ 	else{
+
+
+  		f1.read((char*)&h1,sizeof (hotel));
+  		while(f1){
+
+
+  			f1.read((char*)&h1,sizeof(hotel));
+  		}
+
+
+
+
+  		if (h1.room_no == r){
+
+
+  			if(h1.room_no>=1&&h1.room_no<=30)
+			  	cout<<"Hoa don cua ban = 2000";
+
+  			else if (h1.room_no>=35&&h1.room_no<=45)
+			  	cout<<"Hoa don cua ban = 5000" ;
+			else
+  				cout<<"Hoa don cua ban = 7000";
+  			}
+
+
+
+
+
+  			else
+  				{ cout<<"So phong khong tim thay";}
+  			}
+  	f1.close();
+  	getch();
+}
+
+
+
+
+
+
+int main(){
+	hotel h;
+	h.main_menu();
+	return 0;
+}
+
